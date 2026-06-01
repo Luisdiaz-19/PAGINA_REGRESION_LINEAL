@@ -1,0 +1,272 @@
+{
+  "informacion_inicial": {
+    "dataset": "California Housing",
+    "origen": "Repositorio UCI / Kaggle",
+    "descripcion": "El dataset California Housing contiene informacion sobre viviendas en California, EE.UU., recopilada a partir del censo de 1990.",
+    "tamano": "20,640 registros",
+    "variables": "12 variables predictoras + 1 variable objetivo",
+    "variable_objetivo": "MedianHouseValue - Valor medio de las viviendas en USD"
+  },
+  "estadisticas": {
+    "Longitude": {
+      "count": 20640.0,
+      "mean": -7.601154847666187e-15,
+      "std": 1.0000242256864988,
+      "min": -1.8469959440375987,
+      "25%": -1.1285125300237084,
+      "50%": 0.5462621885579639,
+      "75%": 0.7891298214640622,
+      "max": 1.6594055060442654
+    },
+    "Latitude": {
+      "count": 20640.0,
+      "mean": 2.4235566180964657e-16,
+      "std": 1.0000242256864988,
+      "min": -1.3880684972270971,
+      "25%": -0.799506427333924,
+      "50%": -0.6441260408821271,
+      "75%": 0.9803052720230322,
+      "max": 2.3533499536354214
+    },
+    "HouseAge": {
+      "count": 20640.0,
+      "mean": -8.812933156714421e-17,
+      "std": 1.0000242256864988,
+      "min": -1.9614482268560478,
+      "25%": -0.8473819984559458,
+      "50%": 0.027955752429848827,
+      "75%": 0.6645650258013358,
+      "max": 1.8582074133728737
+    },
+    "AveRooms": {
+      "count": 20640.0,
+      "mean": -1.2117783090482329e-16,
+      "std": 1.0000242256864988,
+      "min": -1.3061497232245605,
+      "25%": -0.6144286652582724,
+      "50%": -0.2484294219292745,
+      "75%": 0.3017144535788696,
+      "max": 4.646886567118533
+    },
+    "AveBedrms": {
+      "count": 20640.0,
+      "mean": 9.914549801303723e-17,
+      "std": 1.0000242256864986,
+      "min": -1.328934047923575,
+      "25%": -0.6270390244408774,
+      "50%": -0.254494742746215,
+      "75%": 0.3076961751009841,
+      "max": 4.554215059096198
+    },
+    "Population": {
+      "count": 20640.0,
+      "mean": -4.131062417209885e-17,
+      "std": 1.0000242256864988,
+      "min": -1.3526639959645244,
+      "25%": -0.6341962589959761,
+      "50%": -0.24464079073978193,
+      "75%": 0.32992782866711134,
+      "max": 4.524412370946599
+    },
+    "AveOccup": {
+      "count": 20640.0,
+      "mean": -8.26212483441977e-17,
+      "std": 1.0000242256864988,
+      "min": -1.369957398915339,
+      "25%": -0.6305729842033962,
+      "50%": -0.24751840790684748,
+      "75%": 0.33448699483829636,
+      "max": 4.425331704766239
+    },
+    "MedInc": {
+      "count": 20640.0,
+      "mean": 4.957274900651862e-17,
+      "std": 1.0000242256864988,
+      "min": -1.5425640641612026,
+      "25%": -0.7144800124873119,
+      "50%": -0.17597583426697297,
+      "75%": 0.4939391072302151,
+      "max": 3.7387621681066086
+    },
+    "MedianHouseValue": {
+      "count": 20640.0,
+      "mean": 206855.81690891474,
+      "std": 115395.61587441387,
+      "min": 14999.0,
+      "25%": 119600.0,
+      "50%": 179700.0,
+      "75%": 264725.0,
+      "max": 500001.0
+    },
+    "ocean_proximity_INLAND": {
+      "count": 20640.0,
+      "mean": -6.609699867535816e-17,
+      "std": 1.0000242256864986,
+      "min": -0.681889047952146,
+      "25%": -0.681889047952146,
+      "50%": -0.681889047952146,
+      "75%": 1.4665142415810999,
+      "max": 1.4665142415810999
+    },
+    "ocean_proximity_ISLAND": {
+      "count": 20640.0,
+      "mean": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "25%": 0.0,
+      "50%": 0.0,
+      "75%": 0.0,
+      "max": 0.0
+    },
+    "ocean_proximity_NEAR BAY": {
+      "count": 20640.0,
+      "mean": -4.4064665783572104e-17,
+      "std": 1.000024225686499,
+      "min": -0.35326426415217194,
+      "25%": -0.35326426415217194,
+      "50%": -0.35326426415217194,
+      "75%": -0.35326426415217194,
+      "max": 2.8307420293416397
+    },
+    "ocean_proximity_NEAR OCEAN": {
+      "count": 20640.0,
+      "mean": 8.812933156714421e-17,
+      "std": 1.0000242256864988,
+      "min": -0.3844664889789674,
+      "25%": -0.3844664889789674,
+      "50%": -0.3844664889789674,
+      "75%": -0.3844664889789674,
+      "max": 2.6010069243114344
+    }
+  },
+  "reporte_preprocesamiento": {
+    "nulos_iniciales": 207,
+    "nulos_por_columna": {
+      "AveBedrms": 207
+    },
+    "metodo_nulos": "SimpleImputer (mediana)",
+    "nulos_final": 0,
+    "duplicados": 0,
+    "variables_categoricas": [
+      "ocean_proximity"
+    ],
+    "codificacion": "One-Hot Encoding",
+    "outliers_detectados": 7165,
+    "metodo_outliers": "Winsorization (percentiles 1-99)",
+    "normalizacion": "Estandarizacion Z-score (StandardScaler)",
+    "variables_escaladas": [
+      "Longitude",
+      "Latitude",
+      "HouseAge",
+      "AveRooms",
+      "AveBedrms",
+      "Population",
+      "AveOccup",
+      "MedInc",
+      "ocean_proximity_INLAND",
+      "ocean_proximity_ISLAND",
+      "ocean_proximity_NEAR BAY",
+      "ocean_proximity_NEAR OCEAN"
+    ]
+  },
+  "info_entrenamiento": {
+    "algoritmo": "LinearRegression()",
+    "libreria": "Scikit-Learn",
+    "split": "80% Train / 20% Test",
+    "train_samples": 16512,
+    "test_samples": 4128,
+    "random_state": 42,
+    "variables_independientes": [
+      "Longitude",
+      "Latitude",
+      "HouseAge",
+      "AveRooms",
+      "AveBedrms",
+      "Population",
+      "AveOccup",
+      "MedInc",
+      "ocean_proximity_INLAND",
+      "ocean_proximity_ISLAND",
+      "ocean_proximity_NEAR BAY",
+      "ocean_proximity_NEAR OCEAN"
+    ],
+    "variable_dependiente": "MedianHouseValue"
+  },
+  "metricas": {
+    "mae": 49910.96,
+    "mse": 4780146898.35,
+    "rmse": 69138.61,
+    "r2": 0.6352
+  },
+  "feature_importance": [
+    {
+      "variable": "MedInc",
+      "coeficiente": 79225.70857184331,
+      "abs_coeficiente": 79225.70857184331
+    },
+    {
+      "variable": "Latitude",
+      "coeficiente": -57208.53852401518,
+      "abs_coeficiente": 57208.53852401518
+    },
+    {
+      "variable": "Longitude",
+      "coeficiente": -56732.39289702572,
+      "abs_coeficiente": 56732.39289702572
+    },
+    {
+      "variable": "AveBedrms",
+      "coeficiente": 55440.39827893478,
+      "abs_coeficiente": 55440.39827893478
+    },
+    {
+      "variable": "Population",
+      "coeficiente": -48334.32374407996,
+      "abs_coeficiente": 48334.32374407996
+    },
+    {
+      "variable": "AveRooms",
+      "coeficiente": -23592.39279387548,
+      "abs_coeficiente": 23592.39279387548
+    },
+    {
+      "variable": "AveOccup",
+      "coeficiente": 21170.80464157457,
+      "abs_coeficiente": 21170.80464157457
+    },
+    {
+      "variable": "ocean_proximity_INLAND",
+      "coeficiente": -16371.67531559263,
+      "abs_coeficiente": 16371.67531559263
+    },
+    {
+      "variable": "HouseAge",
+      "coeficiente": 15060.788012645997,
+      "abs_coeficiente": 15060.788012645997
+    },
+    {
+      "variable": "ocean_proximity_NEAR BAY",
+      "coeficiente": -3095.3528199627726,
+      "abs_coeficiente": 3095.3528199627726
+    },
+    {
+      "variable": "ocean_proximity_NEAR OCEAN",
+      "coeficiente": 964.6117748959155,
+      "abs_coeficiente": 964.6117748959155
+    },
+    {
+      "variable": "ocean_proximity_ISLAND",
+      "coeficiente": -2.9103830456733704e-11,
+      "abs_coeficiente": 2.9103830456733704e-11
+    }
+  ],
+  "conclusiones": [
+    "El precio medio de las viviendas es de $206,855.82.",
+    "El modelo explica el 63.5% de la variabilidad del precio.",
+    "RMSE de $69,138.61 (33.4% del valor medio).",
+    "Error promedio de $49,910.96 por prediccion.",
+    "Variable mas influyente: MedInc (coef: 79225.7086).",
+    "Mejoras futuras: probar Random Forest, Gradient Boosting, ingenieria de caracteristicas.",
+    "La Regresion Lineal Multiple proporciona una base solida e interpretable."
+  ]
+}

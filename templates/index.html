@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regresion Lineal - California Housing</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="d-flex" id="wrapper">
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-icon"><i class="bi bi-graph-up-arrow"></i></div>
+            <div>
+                <div class="sidebar-title">ML Dashboard</div>
+                <span class="sidebar-subtitle">Regresion Lineal</span>
+            </div>
+        </div>
+        <ul class="nav flex-column">
+            <li class="nav-item"><a class="nav-link active" href="#" data-section="dashboard"><i class="bi bi-speedometer2"></i><span>Dashboard</span></a></li>
+            <li class="nav-item"><a class="nav-link" href="#" data-section="exploratorio"><i class="bi bi-search"></i><span>Exploratorio</span></a></li>
+            <li class="nav-item"><a class="nav-link" href="#" data-section="variables"><i class="bi bi-diagram-3"></i><span>Variables</span></a></li>
+            <li class="nav-item"><a class="nav-link" href="#" data-section="preprocesamiento"><i class="bi bi-gear"></i><span>Preprocesamiento</span></a></li>
+            <li class="nav-item"><a class="nav-link" href="#" data-section="entrenamiento"><i class="bi bi-cpu"></i><span>Entrenamiento</span></a></li>
+            <li class="nav-item"><a class="nav-link" href="#" data-section="evaluacion"><i class="bi bi-bar-chart"></i><span>Evaluacion</span></a></li>
+            <li class="nav-item"><a class="nav-link" href="#" data-section="predicciones"><i class="bi bi-graph-up"></i><span>Real vs Predicho</span></a></li>
+            <li class="nav-item"><a class="nav-link" href="#" data-section="importancia"><i class="bi bi-star"></i><span>Importancia</span></a></li>
+            <li class="nav-item"><a class="nav-link" href="#" data-section="conclusiones"><i class="bi bi-journal-text"></i><span>Conclusiones</span></a></li>
+        </ul>
+    </div>
+
+    <div id="content">
+        <nav class="topbar">
+            <div class="d-flex align-items-center gap-3">
+                <button class="btn btn-sm btn-outline-secondary d-md-none" id="menu-toggle"><i class="bi bi-list"></i></button>
+                <span class="brand-text"><i class="bi bi-activity me-2 text-primary"></i>California Housing - Regresion Lineal</span>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <span class="badge bg-primary badge-status" id="statusBadge">Cargando...</span>
+            </div>
+        </nav>
+
+        <div class="container-fluid p-3 p-lg-4">
+
+            <!-- DASHBOARD -->
+            <div class="section-content active" id="section-dashboard">
+                <h2 class="section-title"><i class="bi bi-speedometer2 me-2"></i>Dashboard Principal</h2>
+                <div class="row g-3" id="dashboardCards">
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card stat-card">
+                            <div class="card-body">
+                                <div class="stat-icon"><i class="bi bi-database"></i></div>
+                                <h6 class="stat-label">Total Registros</h6>
+                                <h2 class="stat-value" id="totalRegistros">--</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card stat-card">
+                            <div class="card-body">
+                                <div class="stat-icon"><i class="bi bi-columns-gap"></i></div>
+                                <h6 class="stat-label">Total Variables</h6>
+                                <h2 class="stat-value" id="totalVariables">--</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card stat-card">
+                            <div class="card-body">
+                                <div class="stat-icon"><i class="bi bi-exclamation-triangle"></i></div>
+                                <h6 class="stat-label">Valores Nulos</h6>
+                                <h2 class="stat-value" id="totalNulos">--</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card stat-card">
+                            <div class="card-body">
+                                <div class="stat-icon"><i class="bi bi-bullseye"></i></div>
+                                <h6 class="stat-label">Variable Objetivo</h6>
+                                <h2 class="stat-value" id="varObjetivo" style="font-size:1.1rem;">--</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-3 mt-2">
+                    <div class="col-lg-8">
+                        <div class="card chart-card">
+                            <div class="card-header"><h6><i class="bi bi-coin me-2 text-primary"></i>Distribucion del Valor de Viviendas</h6></div>
+                            <div class="card-body"><canvas id="chartDistribucionPrecio"></canvas></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-header"><h6><i class="bi bi-info-circle me-2 text-primary"></i>Resumen del Dataset</h6></div>
+                            <div class="card-body" id="resumenDataset"><p class="text-muted">Cargando...</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EXPLORATORIO -->
+            <div class="section-content" id="section-exploratorio">
+                <h2 class="section-title"><i class="bi bi-search me-2"></i>Analisis Exploratorio</h2>
+
+                <div class="card mb-3">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h6><i class="bi bi-table me-2 text-primary"></i>Vista de Datos</h6>
+                        <input type="text" class="form-control form-control-sm" id="tablaBuscar" placeholder="Buscar..." style="width:200px;">
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0" id="dataTable">
+                                <thead><tr id="tablaHead"></tr></thead>
+                                <tbody id="tablaBody"></tbody>
+                            </table>
+                        </div>
+                        <div class="p-3 d-flex justify-content-between align-items-center border-top">
+                            <span class="text-muted small" id="tablaInfo">Mostrando 0 de 0 registros</span>
+                            <div>
+                                <button class="btn btn-sm btn-outline-accent me-1" id="tablaPrev"><i class="bi bi-chevron-left"></i></button>
+                                <span class="text-muted small mx-2" id="tablaPagina">Pagina 1</span>
+                                <button class="btn btn-sm btn-outline-accent ms-1" id="tablaNext"><i class="bi bi-chevron-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-3">
+                    <div class="card-header"><h6><i class="bi bi-bar-chart-steps me-2 text-primary"></i>Estadisticas Descriptivas</h6></div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-hover mb-0" id="statsTable">
+                                <thead><tr><th>Variable</th><th>Media</th><th>Mediana</th><th>Moda</th><th>Std</th><th>Min</th><th>Max</th></tr></thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-md-6"><div class="card chart-card"><div class="card-header"><h6><i class="bi bi-cash-stack me-2 text-primary"></i>Ingresos Medios</h6></div><div class="card-body"><canvas id="chartIngresos"></canvas></div></div></div>
+                    <div class="col-md-6"><div class="card chart-card"><div class="card-header"><h6><i class="bi bi-house-door me-2 text-primary"></i>Precio de Viviendas</h6></div><div class="card-body"><canvas id="chartPrecio"></canvas></div></div></div>
+                    <div class="col-md-6"><div class="card chart-card"><div class="card-header"><h6><i class="bi bi-door-open me-2 text-primary"></i>Habitaciones por Hogar</h6></div><div class="card-body"><canvas id="chartHabitaciones"></canvas></div></div></div>
+                    <div class="col-md-6"><div class="card chart-card"><div class="card-header"><h6><i class="bi bi-people me-2 text-primary"></i>Poblacion</h6></div><div class="card-body"><canvas id="chartPoblacion"></canvas></div></div></div>
+                </div>
+            </div>
+
+            <!-- VARIABLES -->
+            <div class="section-content" id="section-variables">
+                <h2 class="section-title"><i class="bi bi-diagram-3 me-2"></i>Variables del Modelo</h2>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="card border-primary border-2">
+                            <div class="card-header bg-primary text-white"><h6 class="text-white"><i class="bi bi-arrow-right-circle me-2"></i>Variable Dependiente (Y)</h6></div>
+                            <div class="card-body">
+                                <h4 class="text-primary">MedianHouseValue</h4>
+                                <p class="text-muted mt-2">Valor mediano de las viviendas en el bloque censal, expresado en dolares americanos (USD). Esta es la variable que el modelo intenta predecir.</p>
+                                <div class="alert" style="background:var(--primary-light);border:1px solid var(--primary);color:var(--gray-700);">
+                                    <i class="bi bi-info-circle text-primary me-2"></i>La variable dependiente es el objetivo del analisis. Se busca explicar su variabilidad en funcion de las variables independientes.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header"><h6><i class="bi bi-arrow-left-circle me-2 text-primary"></i>Variables Independientes (X)</h6></div>
+                            <div class="card-body"><ul class="list-group list-group-flush" id="varsIndependientes"></ul></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mt-3">
+                    <div class="card-header"><h6><i class="bi bi-journal-text me-2 text-primary"></i>Justificacion Academica</h6></div>
+                    <div class="card-body">
+                        <p><strong>Seleccion de variables:</strong> Se han seleccionado todas las variables numericas disponibles como predictoras debido a que:</p>
+                        <ul>
+                            <li><strong>MedInc (Ingreso Medio):</strong> El ingreso economico es tipicamente el predictor mas fuerte del valor de viviendas.</li>
+                            <li><strong>HouseAge (Edad de Viviendas):</strong> La antiguedad de las construcciones puede afectar el valor.</li>
+                            <li><strong>AveRooms (Promedio de Habitaciones):</strong> Viviendas con mas habitaciones suelen tener mayor valor.</li>
+                            <li><strong>AveBedrms (Promedio de Dormitorios):</strong> Indicador del tamano y calidad de la vivienda.</li>
+                            <li><strong>Population (Poblacion):</strong> La densidad poblacional influye en la demanda y los precios.</li>
+                            <li><strong>AveOccup (Ocupacion Promedio):</strong> Relacionado con densidad y nivel socioeconomico.</li>
+                            <li><strong>Latitude / Longitude:</strong> La ubicacion geografica captura efectos regionales en el precio.</li>
+                            <li><strong>ocean_proximity (Proximidad al Oceano):</strong> Variable categorica que captura el efecto de la ubicacion costera.</li>
+                        </ul>
+                        <p class="mt-2">Todas las variables fueron incluidas para construir un modelo de regresion multiple completo, permitiendo que el algoritmo determine los pesos optimos.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PREPROCESAMIENTO -->
+            <div class="section-content" id="section-preprocesamiento">
+                <h2 class="section-title"><i class="bi bi-gear me-2"></i>Preprocesamiento de Datos</h2>
+                <div class="row g-3" id="preproCards"></div>
+                <div class="card mt-3">
+                    <div class="card-header"><h6><i class="bi bi-list-check me-2 text-primary"></i>Detalle del Preprocesamiento</h6></div>
+                    <div class="card-body" id="detallePrepro"><p class="text-muted">Cargando...</p></div>
+                </div>
+                <div class="card mt-3">
+                    <div class="card-header"><h6><i class="bi bi-graph-down me-2 text-primary"></i>Distribucion de Datos (Estandarizada)</h6></div>
+                    <div class="card-body"><canvas id="chartPrepro"></canvas></div>
+                </div>
+            </div>
+
+            <!-- ENTRENAMIENTO -->
+            <div class="section-content" id="section-entrenamiento">
+                <h2 class="section-title"><i class="bi bi-cpu me-2"></i>Entrenamiento del Modelo</h2>
+                <div class="row g-3">
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-header"><h6><i class="bi bi-info-circle me-2 text-primary"></i>Parametros de Entrenamiento</h6></div>
+                            <div class="card-body" id="paramsEntrenamiento"><p class="text-muted">Cargando...</p></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-header"><h6><i class="bi bi-code-slash me-2 text-primary"></i>Codigo del Modelo</h6></div>
+                            <div class="card-body">
+                                <pre class="code-block"><code>
+<span class="code-comment"># Importar librerias</span>
+<span class="code-keyword">from</span> sklearn.linear_model <span class="code-keyword">import</span> LinearRegression
+<span class="code-keyword">from</span> sklearn.model_selection <span class="code-keyword">import</span> train_test_split
+
+<span class="code-comment"># Dividir datos</span>
+X_train, X_test, y_train, y_test = <span class="code-func">train_test_split</span>(
+    X, y, test_size=<span class="code-number">0.2</span>, random_state=<span class="code-number">42</span>
+)
+
+<span class="code-comment"># Crear y entrenar modelo</span>
+modelo = <span class="code-func">LinearRegression</span>()
+modelo.<span class="code-func">fit</span>(X_train, y_train)
+
+<span class="code-comment"># Predecir</span>
+y_pred = modelo.<span class="code-func">predict</span>(X_test)
+                                </code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mt-3">
+                    <div class="card-header"><h6><i class="bi bi-pie-chart me-2 text-primary"></i>Distribucion Train/Test</h6></div>
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-5"><canvas id="chartSplit"></canvas></div>
+                            <div class="col-md-7" id="splitInfo"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EVALUACION -->
+            <div class="section-content" id="section-evaluacion">
+                <h2 class="section-title"><i class="bi bi-bar-chart me-2"></i>Evaluacion del Modelo</h2>
+                <div class="row g-3" id="metricCards"></div>
+                <div class="card mt-3">
+                    <div class="card-header"><h6><i class="bi bi-chat-dots me-2 text-primary"></i>Interpretacion de Metricas</h6></div>
+                    <div class="card-body" id="interpretacionMetricas"><p class="text-muted">Cargando...</p></div>
+                </div>
+            </div>
+
+            <!-- REAL VS PREDICHO -->
+            <div class="section-content" id="section-predicciones">
+                <h2 class="section-title"><i class="bi bi-graph-up me-2"></i>Comparacion Real vs Predicho</h2>
+                <div class="row g-3">
+                    <div class="col-lg-6"><div class="card chart-card"><div class="card-header"><h6><i class="bi bi-dot me-2 text-primary"></i>Scatter Plot: Real vs Predicho</h6></div><div class="card-body"><canvas id="chartScatter"></canvas></div></div></div>
+                    <div class="col-lg-6"><div class="card chart-card"><div class="card-header"><h6><i class="bi bi-line me-2 text-primary"></i>Lineas de Comparacion</h6></div><div class="card-body"><canvas id="chartLineas"></canvas></div></div></div>
+                </div>
+                <div class="card mt-3">
+                    <div class="card-header"><h6><i class="bi bi-table me-2 text-primary"></i>Tabla Comparativa (10 registros)</h6></div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-sm mb-0" id="tablaComparativa">
+                                <thead><tr><th>#</th><th>Valor Real</th><th>Valor Predicho</th><th>Diferencia</th><th>Error %</th></tr></thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- IMPORTANCIA -->
+            <div class="section-content" id="section-importancia">
+                <h2 class="section-title"><i class="bi bi-star me-2"></i>Importancia de Variables</h2>
+                <div class="row g-3">
+                    <div class="col-lg-8"><div class="card chart-card"><div class="card-header"><h6><i class="bi bi-bar-chart-fill me-2 text-primary"></i>Coeficientes del Modelo</h6></div><div class="card-body"><canvas id="chartImportancia"></canvas></div></div></div>
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-header"><h6><i class="bi bi-trophy me-2 text-primary"></i>Top Variables</h6></div>
+                            <div class="card-body" id="topVariables"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mt-3">
+                    <div class="card-header"><h6><i class="bi bi-journal-text me-2 text-primary"></i>Interpretacion de Coeficientes</h6></div>
+                    <div class="card-body">
+                        <p>Los coeficientes representan el cambio esperado en <strong>MedianHouseValue</strong> por cada unidad de cambio en la variable independiente, manteniendo las demas constantes.</p>
+                        <p class="mb-1"><span class="badge bg-success me-1">Positivo</span> = al aumentar la variable, el precio tiende a aumentar.</p>
+                        <p><span class="badge bg-danger me-1">Negativo</span> = al aumentar la variable, el precio tiende a disminuir.</p>
+                        <p class="text-muted small">La magnitud absoluta del coeficiente refleja la fuerza de la relacion.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONCLUSIONES -->
+            <div class="section-content" id="section-conclusiones">
+                <h2 class="section-title"><i class="bi bi-journal-text me-2"></i>Conclusiones</h2>
+                <div class="card">
+                    <div class="card-header bg-primary text-white"><h6 class="text-white"><i class="bi bi-lightbulb me-2"></i>Hallazgos del Analisis</h6></div>
+                    <div class="card-body" id="conclusionesContent"></div>
+                </div>
+                <div class="row g-3 mt-2">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header"><h6><i class="bi bi-check-circle me-2 text-success"></i>Fortalezas del Modelo</h6></div>
+                            <div class="card-body">
+                                <ul class="list-unstyled mb-0">
+                                    <li class="mb-1"><i class="bi bi-check text-success me-2"></i>Modelo interpretable y transparente</li>
+                                    <li class="mb-1"><i class="bi bi-check text-success me-2"></i>Base solida para entender relaciones lineales</li>
+                                    <li><i class="bi bi-check text-success me-2"></i>Entrenamiento rapido y escalable</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header"><h6><i class="bi bi-arrow-up-circle me-2 text-info"></i>Mejoras Futuras</h6></div>
+                            <div class="card-body">
+                                <ul class="list-unstyled mb-0">
+                                    <li class="mb-1"><i class="bi bi-arrow-right text-info me-2"></i>Incluir variables adicionales (tipo de propiedad, zona)</li>
+                                    <li class="mb-1"><i class="bi bi-arrow-right text-info me-2"></i>Probar Random Forest o Gradient Boosting</li>
+                                    <li><i class="bi bi-arrow-right text-info me-2"></i>Ingenieria de caracteristicas avanzada</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
